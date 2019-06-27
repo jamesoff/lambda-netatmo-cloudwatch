@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Deploy the netatmo-to-cloudwatch app
+
+Globals:
+  Function:
+    Timeout: 10
+
+Resources:
+  NetatmoUpdateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: netatmo/
+      Handler: index.lambda_handler
+      Runtime: python3.6
+      Events:
+        Timer:
+          Type: Schedule
+          Properties:
+            Schedule: "rate(5 minutes)"
