@@ -19,3 +19,5 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: "rate(5 minutes)"
+      Policies:
+        - CloudWatchPutMetricPolicy: {}
