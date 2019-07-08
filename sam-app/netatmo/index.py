@@ -3,6 +3,7 @@
 import os
 import boto3
 import lnetatmo
+import time
 
 
 cloudwatch_client = boto3.client("cloudwatch")
@@ -19,7 +20,13 @@ def main():
     Metrics"""
     weather_data = lnetatmo.WeatherStationData(auth)
     last_data = weather_data.lastData(os.environ["NETATMO_STATION"])
-    metric_data = []
+    if not last_data:
+        # lnetatmo eats the Exception and returns None if there's a problem
+        print("Failed to get data from Netatmo, aborting")
+        post_metrics([{"MetricName": "apierror", "Timestamp": time.time(), "Value": 1}])
+        return
+    # Init metric_data with our API success status
+    metric_data = [{"MetricName": "apierror", "Timestamp": time.time(), "Value": 0}]
     for device in last_data.keys():
         device_data = last_data[device]
         when = device_data["When"]
