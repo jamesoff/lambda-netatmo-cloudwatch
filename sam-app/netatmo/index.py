@@ -34,12 +34,9 @@ def main():
                 "Value": value,
             }
             metric_data.append(metric)
-            print("Number of metrics: {}".format(len(metric_data)))
             if len(metric_data) > 19:
-                print("Posting")
                 post_metrics(metric_data)
                 metric_data = []
-    print("Loop finished, number of metrics to post: {}".format(metric_data))
     if len(metric_data):
         post_metrics(metric_data)
 
