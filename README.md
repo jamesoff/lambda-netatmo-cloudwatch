@@ -22,7 +22,7 @@ Method:
 
 1. Edit the Makefile to set the name of your bucket
 2. `make build`, which will use a Docker container (downloaded on first use) to build the Lambda deployable
-3. `make packge`, which will upload the deployable to the S3 bucket and output an updated CloudFormation template referencing it
+3. `make package`, which will upload the deployable to the S3 bucket and output an updated CloudFormation template referencing it
 4. `make deploy`, which will create or update the CloudFormation stack which sets up the environment.
 5. Once deployed, locate the Lambda function and create/set the following environment variables:
     * `CLIENT_ID` and `CLIENT_SECRET`, from your Netatmo app in the dev portal
