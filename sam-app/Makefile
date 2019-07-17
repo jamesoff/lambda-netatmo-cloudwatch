@@ -2,7 +2,7 @@ PLATFORM=$(shell uname)
 ifeq "$(PLATFORM)" "Darwin"
 	CONTAINER_FLAG="-u"
 else
-	CONTAINER_FLAG=""
+	CONTAINER_FLAG="-u"
 endif
 
 build:
