@@ -23,10 +23,26 @@ def main():
     if not last_data:
         # lnetatmo eats the Exception and returns None if there's a problem
         print("Failed to get data from Netatmo, aborting")
-        post_metrics([{"MetricName": "apierror", "Timestamp": time.time(), "Value": 1}])
+        post_metrics(
+            [
+                {
+                    "MetricName": "apierror",
+                    "Timestamp": time.time(),
+                    "Value": 1,
+                    "Unit": "Count",
+                }
+            ]
+        )
         return
     # Init metric_data with our API success status
-    metric_data = [{"MetricName": "apierror", "Timestamp": time.time(), "Value": 0}]
+    metric_data = [
+        {
+            "MetricName": "apierror",
+            "Timestamp": time.time(),
+            "Value": 0,
+            "Unit": "Count",
+        }
+    ]
     for device in last_data.keys():
         device_data = last_data[device]
         when = device_data["When"]
