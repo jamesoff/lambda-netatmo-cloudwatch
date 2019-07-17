@@ -6,7 +6,7 @@ else
 endif
 
 build:
-	sam build $(CONTAINER_FLAG)
+	sam build $(CONTAINER_FLAG) --debug
 
 package:
 	sam package --s3-bucket code.jamesoff.net-lhr --output-template-file output.yml
