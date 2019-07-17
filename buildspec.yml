@@ -15,4 +15,5 @@ phases:
 artifacts:
   type: zip
   files:
-    - output.yml
+    - sam-app/output.yml
+  discard-paths: yes
