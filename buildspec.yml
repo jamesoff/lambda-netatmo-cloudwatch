@@ -9,6 +9,7 @@ phases:
   build:
     commands:
       - cd sam-app
+      - export PATH=$PATH:/root/.local/bin
       - make build
       - make package
 artifacts:
