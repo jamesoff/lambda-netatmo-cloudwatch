@@ -15,24 +15,33 @@ def post_metrics(metric_data):
     cloudwatch_client.put_metric_data(Namespace="netatmo", MetricData=metric_data)
 
 
+def post_error_metric():
+    post_metrics(
+        [
+            {
+                "MetricName": "apierror",
+                "Timestamp": time.time(),
+                "Value": 1,
+                "Unit": "Count",
+            }
+        ]
+    )
+
+
 def main():
     """Fetch data from Netatmo and interate through it, posting to CloudWatch
     Metrics"""
-    weather_data = lnetatmo.WeatherStationData(auth)
-    last_data = weather_data.lastData(os.environ["NETATMO_STATION"])
+    try:
+        weather_data = lnetatmo.WeatherStationData(auth)
+        last_data = weather_data.lastData(os.environ["NETATMO_STATION"])
+    except TypeError:
+        print("Caught error from letnatmo, aborting")
+        post_error_metric()
+        return
     if not last_data:
         # lnetatmo eats the Exception and returns None if there's a problem
         print("Failed to get data from Netatmo, aborting")
-        post_metrics(
-            [
-                {
-                    "MetricName": "apierror",
-                    "Timestamp": time.time(),
-                    "Value": 1,
-                    "Unit": "Count",
-                }
-            ]
-        )
+        post_error_metric()
         return
     # Init metric_data with our API success status
     metric_data = [
