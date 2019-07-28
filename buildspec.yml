@@ -6,6 +6,7 @@ phases:
       python: 3.7
     commands:
       - pip install --user aws-sam-cli
+      - pip install --user pipenv
   build:
     commands:
       - cd sam-app
