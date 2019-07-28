@@ -14,6 +14,11 @@ Resources:
       CodeUri: netatmo/
       Handler: index.lambda_handler
       Runtime: python3.6
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: AllAtOnce
+        Hooks:
+          PreTraffic: !Ref PreHookFunction
       Events:
         Timer:
           Type: Schedule
@@ -21,3 +26,36 @@ Resources:
             Schedule: "rate(5 minutes)"
       Policies:
         - CloudWatchPutMetricPolicy: {}
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - ssm:GetParametersByPath
+              Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/netatmo"
+
+  PreHookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: netatmo/
+      Handler: hook.lambda_handler
+      Runtime: python3.6
+      DeploymentPreference:
+        Enabled: false
+      FunctionName: 'CodeDeployHook_netatmoPreTrafficHook'
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+              - "codedeploy:PutLifecycleEventHookExecutionStatus"
+            Resource:
+              !Sub 'arn:aws:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentgroup:${ServerlessDeploymentApplication}/*'
+        - Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+              - "lambda:InvokeFunction"
+            Resource: "*"
+      Environment:
+        Variables:
+          NewVersion: !Ref NetatmoUpdateFunction.Version

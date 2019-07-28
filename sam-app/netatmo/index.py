@@ -1,13 +1,28 @@
 """Fetch data from Netatmo and send it to CloudWatch."""
 
-import os
 import boto3
 import lnetatmo
 import time
 
 
+ssm_client = boto3.client("ssm")
+parameters = ssm_client.get_parameters_by_path(
+    Path="/netatmo", Recursive=True, WithDecryption=True
+)
+params = {}
+print("Loading parameters")
+for param in parameters["Parameters"]:
+    param_name = param["Name"].split("/")[-1].upper().replace("-", "_")
+    print("... {}".format(param_name))
+    params[param_name] = param["Value"]
+
 cloudwatch_client = boto3.client("cloudwatch")
-auth = lnetatmo.ClientAuth(username=os.environ["NETATMO_USERNAME"])
+auth = lnetatmo.ClientAuth(
+    clientId=params["CLIENT_ID"],
+    clientSecret=params["CLIENT_SECRET"],
+    username=params["NETATMO_USERNAME"],
+    password=params["NETATMO_PASSWORD"],
+)
 
 
 def post_metrics(metric_data):
@@ -33,7 +48,7 @@ def main():
     Metrics"""
     try:
         weather_data = lnetatmo.WeatherStationData(auth)
-        last_data = weather_data.lastData(os.environ["NETATMO_STATION"])
+        last_data = weather_data.lastData(params["NETATMO_STATION"])
     except TypeError:
         print("Caught error from letnatmo, aborting")
         post_error_metric()

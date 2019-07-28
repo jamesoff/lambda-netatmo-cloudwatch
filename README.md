@@ -21,12 +21,14 @@ You will need:
 Method:
 
 1. Edit the Makefile to set the name of your bucket
-2. `make build`, which will use a Docker container (downloaded on first use) to build the Lambda deployable
-3. `make package`, which will upload the deployable to the S3 bucket and output an updated CloudFormation template referencing it
-4. `make deploy`, which will create or update the CloudFormation stack which sets up the environment.
-5. Once deployed, locate the Lambda function and create/set the following environment variables:
-    * `CLIENT_ID` and `CLIENT_SECRET`, from your Netatmo app in the dev portal
-    * `NETATMO_USERNAME` and `PASSWORD`, your Netatmo credentials
-    * `NETATMO_STATION`, the name of your station in the UI or its ID
+2. In SSM Parameter Store, create the following parameters as **SecureString**s with the default KMS key:
+    * `netatmo/client-id` and `netatmo/client-secret`, with the values from the Netatmo dev portal.
+    * `netatmo/netatmo-username` and `netatmo/netatmo-password`, with your Netatmo credentials
+    * `netatmo/netatmo-station`, with the name of your weather station
+3. `make build`, which will use a Docker container (downloaded on first use) to build the Lambda deployable
+4. `make package`, which will upload the deployable to the S3 bucket and output an updated CloudFormation template referencing it
+5. `make deploy`, which will create or update the CloudFormation stack which sets up the environment. On updates, CodeDeploy is used.
 
 The function should then run every 5 minutes and save metrics to CloudWatch in the "Netatmo" namespace.
+
+If you would like to use CodePipeline/CodeBuild to run deployments, a `buildspec.yml` is included.

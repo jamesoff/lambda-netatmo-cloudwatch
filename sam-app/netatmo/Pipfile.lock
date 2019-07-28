@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f27573dee2949bd10cf0856194aae798fc967dcadc3d3e09b2c4f344ef243865"
+            "sha256": "5f8fe53bef975bcb486ab40cbe2acd91c3f9615733ef65edaf7e1be76d989796"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,20 +16,29 @@
         ]
     },
     "default": {
-        "boto3": {
+        "lnetatmo": {
             "hashes": [
-                "sha256:031fc6b43f7132941d71fa012c404ae10d4ad6191c97580cad7f43619fb5505e",
-                "sha256:b1db8ea71b676c08c07d52a44b0b03007fc922b7618bab8c79f6fd638334bf68"
+                "sha256:928a5927b4dfc965ffdcb364392679f0e7c09c0d6d8d27cd45f06e190f3ec55d"
             ],
             "index": "pypi",
-            "version": "==1.9.179"
+            "version": "==1.6.0"
+        }
+    },
+    "develop": {
+        "boto3": {
+            "hashes": [
+                "sha256:01f1792838981191da87bed271f2b486841a282fcd78a3b5bac98e5b85c95ba8",
+                "sha256:0f1f796abf85e53a8a50b893cbeccd93ee081184453127b663da4b97d72aa0cc"
+            ],
+            "index": "pypi",
+            "version": "==1.9.197"
         },
         "botocore": {
             "hashes": [
-                "sha256:0bcab3d6ee49f348169fe93744feae09aae1445f1e0cb1109caccbec487fbeb0",
-                "sha256:adbc569149432143a0d6f578c0a16417a24f7a579116d086d5cecbb70d848ddb"
+                "sha256:6e7c49014430f73ba6ab638d4ad313f8522b8185e476fe1a57ce9cd50c596062",
+                "sha256:78627966a280328e4a7018758e91e6413d5cae8387e08ab219e232689a92cb45"
             ],
-            "version": "==1.12.179"
+            "version": "==1.12.197"
         },
         "docutils": {
             "hashes": [
@@ -45,13 +54,6 @@
                 "sha256:bde2aef6f44302dfb30320115b17d030798de8c4110e28d5cf6cf91a7a31074c"
             ],
             "version": "==0.9.4"
-        },
-        "lnetatmo": {
-            "hashes": [
-                "sha256:928a5927b4dfc965ffdcb364392679f0e7c09c0d6d8d27cd45f06e190f3ec55d"
-            ],
-            "index": "pypi",
-            "version": "==1.6.0"
         },
         "python-dateutil": {
             "hashes": [
@@ -83,6 +85,5 @@
             "markers": "python_version >= '3.4'",
             "version": "==1.25.3"
         }
-    },
-    "develop": {}
+    }
 }
