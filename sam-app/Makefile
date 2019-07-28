@@ -6,7 +6,8 @@ else
 endif
 
 build:
-	sam build $(CONTAINER_FLAG) --debug
+	cd netatmo; pipenv lock -r > requirements.txt
+	sam build $(CONTAINER_FLAG)
 
 package:
 	sam package --s3-bucket code.jamesoff.net-lhr --output-template-file output.yml
